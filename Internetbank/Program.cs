@@ -2,7 +2,9 @@
 {
     internal class Program
     {
-
+        //This method checks if the correct credentials have been inputed when you login. The mehod has 5 paramters and these are AnvändarNamn which is the username the user inputed and the same with PinKod except it is for the users password.
+        //The two array paramters AnvändarNamnArray and PinKodArray are used to check if the inputed username and password are correct and then lastly the UserIndex is outputed so that we later can used that to identify the right account for the right user.
+        
         static bool CheckLogin(string AnvändarNamn, int PinKod, string[] AnvändarNamnArray, int[] PinKodArray, out int UserIndex)
         {
             for(int i = 0; i < AnvändarNamnArray.Length;i++)
@@ -17,6 +19,9 @@
             return false;
         }
 
+        //Method that prints all of the accounts associated with the user and also prints the balances for each account.
+        //The method takes 3 paramters, UserIndex which is used to located the right account, AnvändarKonton which is where all the accounts are located and then KontoSaldon which is where all the balancs are stored.
+
         static void VisaKonton(int UserIndex, List<List<String>> AnvändarKonton, List<List<decimal>> KontoSaldon)
         {
             for (int i = 0; i < AnvändarKonton[UserIndex].Count; i++)
@@ -27,7 +32,10 @@
             Console.ReadLine();
         }
 
-        static void KontoÖverföring(int UserIndex, List<List<String>> AnvändarKonton, List<List<decimal>> KontoSaldon)
+        //This method handles the transferes between accounts.
+        //The method takes 3 paramters, UserIndex which is used to located the right account, AnvändarKonton which is where all the accounts are located and then KontoSaldon which is where all the balancs are stored.
+        
+          static void KontoÖverföring(int UserIndex, List<List<String>> AnvändarKonton, List<List<decimal>> KontoSaldon)
         {
             while (true)
             {
@@ -83,6 +91,9 @@
             }
         }
 
+        //This method handles taking out money from an account.
+        //The method takes 3 paramters, UserIndex which is used to located the right account, AnvändarKonton which is where all the accounts are located and then KontoSaldon which is where all the balancs are stored.
+        //The method also needs the PinKodArray so that it can check if the inputed pinkod is correct.
         static void KontoUtdrag(int UserIndex, List<List<String>> AnvändarKonton, List<List<decimal>> KontoSaldon, int[] PinKodArray) 
         {
             while (true)
@@ -133,14 +144,23 @@
 
         static void Main(string[] args)
         {
+            //Index for remembering which account is currently being used by the user.
             int UserIndex = -1;
+            //Temp
             string StringTemp;
+            //Integer for the input of the pinkod
             int PinKod = 0;
+            //Integer for the input of the menu choice
             int MenyVal = 0;
+            //Integer for the amounts of attemps the user has used when trying to login.
             int PinAttempts = 0;
+            //Integer for the amount of times the user is allowed to fail when trying to login
             int LockoutTime = 3;
+            //Array for the different usernames.
             string[] AnvändarNamnArray = { "Theodor", "Anas", "Shenol", "Zandra", "Albion" };
+            //Array for the different pincodes associated to each username.
             int[] PinKodArray = { 1337, 2026, 3337, 4337, 5337 };
+            //List for the different accounts.
             List<List<string>> AnvändarKonton = new List<List<string>>
             {
                 new List<string> {"LöneKonto", "SparKonto", "MatKonto", "Övrigt"},
@@ -149,7 +169,7 @@
                 new List<string> {"LöneKonto", "HusKonto", "FondKonto"},
                 new List<string> {"LöneKonto", "SparKonto", "MatKonto", "Övrigt", "DjurKonto", "HusKonto"}
             };
-
+            //List for the different balances.
             List<List<decimal>> KontoSaldon = new List<List<decimal>>
             {
                 new List<decimal> {23000, 150000, 3000, 1500},
