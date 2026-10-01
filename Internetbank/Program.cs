@@ -37,12 +37,13 @@
                     Console.WriteLine($"{i + 1}. {AnvändarKonton[UserIndex][i]}");
                 }
 
-                Console.Write("Välj:");
+                Console.Write("Välj: ");
                 if (!(int.TryParse(Console.ReadLine(), out int KontoNummer) && KontoNummer <= AnvändarKonton[UserIndex].Count && KontoNummer >= 1))
                 {
                     Console.WriteLine("Ogiltigt val");
                     continue;
                 }
+                Console.WriteLine("");
 
 
                 Console.WriteLine("Vilket konto vill du överföra pengar till?");
@@ -50,30 +51,80 @@
                 {
                     Console.WriteLine($"{i + 1}. {AnvändarKonton[UserIndex][i]}");
                 }
-                Console.Write("Välj:");
+                Console.Write("Välj: ");
                 if (!(int.TryParse(Console.ReadLine(), out int KontoNummer2) && KontoNummer2 <= AnvändarKonton[UserIndex].Count && KontoNummer2 >= 1))
                 {
                     Console.WriteLine("Ogiltigt val");
                     continue;
                 }
-
+                Console.WriteLine("");
                 if (KontoNummer == KontoNummer2)
                 {
                     Console.WriteLine("Du kan inte överföra pengar till samma konto.");
+                    Console.WriteLine();
                     continue;
                 }
 
-                Console.WriteLine("Hur mycket vill du överföra?");
+                Console.WriteLine("Hur mycket vill du överföra? \n");
+                Console.Write("Summa: ");
+
                 if (!(decimal.TryParse(Console.ReadLine(), out decimal Överföra) && Överföra > 0 && Överföra <= KontoSaldon[UserIndex][KontoNummer - 1]))
                 {
                     Console.WriteLine("Ogiltigt val");
                     continue;
                 }
+                Console.WriteLine("");
                 KontoSaldon[UserIndex][KontoNummer - 1] -= Överföra;
                 KontoSaldon[UserIndex][KontoNummer2 - 1] += Överföra;
                 Console.WriteLine($"{AnvändarKonton[UserIndex][KontoNummer - 1]} : {KontoSaldon[UserIndex][KontoNummer - 1]}");
                 Console.WriteLine($"{AnvändarKonton[UserIndex][KontoNummer2 - 1]} : {KontoSaldon[UserIndex][KontoNummer2 - 1]}\n");
 
+                break;
+            }
+        }
+
+        static void KontoUtdrag(int UserIndex, List<List<String>> AnvändarKonton, List<List<decimal>> KontoSaldon, int[] PinKodArray) 
+        {
+            while (true)
+            {
+                Console.WriteLine("Vilket konto vill du ta ut pengar från?");
+                for (int i = 0; i < AnvändarKonton[UserIndex].Count; i++)
+                {
+                    Console.WriteLine($"{i + 1} : {AnvändarKonton[UserIndex][i]} : {KontoSaldon[UserIndex][i]}");
+                }
+                Console.Write("Välj: ");
+                if (!(int.TryParse(Console.ReadLine(), out int KontoNummer) && KontoNummer <= AnvändarKonton[UserIndex].Count && KontoNummer >= 1))
+                {
+                    Console.WriteLine("Ogiltigt val");
+                    continue;
+                }
+                Console.WriteLine("");
+                Console.WriteLine("Hur mycket vill du ta ut?");
+                if (!(decimal.TryParse(Console.ReadLine(), out decimal Summa) && Summa > 0 && Summa <= KontoSaldon[UserIndex][KontoNummer - 1]))
+                {
+                    Console.WriteLine("Ogiltigt val");
+                    continue;
+                }
+                Console.WriteLine("");
+
+
+                Console.Write("Ange Pinkod: ");
+                if (!(int.TryParse(Console.ReadLine(), out int PinKod)))
+                {
+                    Console.WriteLine("Ogiltigt val");
+                    continue;
+                }
+                Console.WriteLine("");
+
+                if (PinKod != PinKodArray[UserIndex])
+                {
+                    Console.WriteLine("Fel pinkod");
+                }
+                else
+                {
+                    KontoSaldon[UserIndex][KontoNummer - 1] -= Summa;
+                    Console.WriteLine($"Nytt saldo: {AnvändarKonton[UserIndex][KontoNummer - 1]} : {KontoSaldon[UserIndex][KontoNummer - 1]} \n");
+                }
                 break;
             }
         }
@@ -88,8 +139,8 @@
             int MenyVal = 0;
             int PinAttempts = 0;
             int LockoutTime = 3;
-            string[] AnvändarNamnArray = { "Theodor", "Leon", "Shenol", "Zandra", "Albion" };
-            int[] PinKodArray = { 1337, 2337, 3337, 4337, 5337 };
+            string[] AnvändarNamnArray = { "Theodor", "Anas", "Shenol", "Zandra", "Albion" };
+            int[] PinKodArray = { 1337, 2026, 3337, 4337, 5337 };
             List<List<string>> AnvändarKonton = new List<List<string>>
             {
                 new List<string> {"LöneKonto", "SparKonto", "MatKonto", "Övrigt"},
@@ -108,14 +159,14 @@
                 new List<decimal> { 23000, 150000, 3000, 1500, 2500, 50000}
             };
 
-            Console.WriteLine("Välkommen till TheodorBank skriv in ditt användarnamn och pin-kod för att fortsätta!");
+            Console.WriteLine("Välkommen till TheodorBank skriv in ditt användarnamn och pin-kod för att fortsätta! \n");
 
             while(true) {
                 Console.Write("Användarnamn: ");
                 StringTemp = Console.ReadLine();
                 Console.Write("Pin-kod (4 siffror): ");
                 int.TryParse(Console.ReadLine(), out PinKod);
-
+                Console.WriteLine("");
                 if (CheckLogin(StringTemp, PinKod, AnvändarNamnArray, PinKodArray, out UserIndex))
                 {
                     MenyVal = 0;
@@ -132,6 +183,7 @@
                             Console.WriteLine("Ogiltigt val");
                             continue;
                         }
+                        Console.WriteLine("");
                         switch (MenyVal){
                             case 1:
                                 VisaKonton(UserIndex, AnvändarKonton, KontoSaldon);
@@ -143,49 +195,13 @@
 
                                 break;
                             case 3:
-                                while(true)
-                                {
-                                    Console.WriteLine("Vilket konto vill du ta ut pengar från?");
-                                    for (int i = 0; i < AnvändarKonton[UserIndex].Count; i++)
-                                    {
-                                        Console.WriteLine($"{i+1} : {AnvändarKonton[UserIndex][i]} : {KontoSaldon[UserIndex][i]}");
-                                    }
-                                    Console.Write("Välj:");
-                                    if (!(int.TryParse(Console.ReadLine(), out int KontoNummer) && KontoNummer <= AnvändarKonton[UserIndex].Count && KontoNummer >= 1))
-                                    {
-                                        Console.WriteLine("Ogiltigt val");
-                                        continue;
-                                    }
-                                    Console.WriteLine("Hur mycket vill du ta ut?");
-                                    if (!(decimal.TryParse(Console.ReadLine(), out decimal Summa) && Summa > 0 && Summa <= KontoSaldon[UserIndex][KontoNummer - 1]))
-                                    {
-                                        Console.WriteLine("Ogiltigt val");
-                                        continue;
-                                    }
-
-                                    Console.Write("Ange Pinkod: ");
-                                    if (!(int.TryParse(Console.ReadLine(), out PinKod)))
-                                    {
-                                        Console.WriteLine("Ogiltigt val");
-                                        continue;
-                                    }
-
-                                    if (PinKod != PinKodArray[UserIndex])
-                                    {
-                                        Console.WriteLine("Fel pinkod");
-                                    }
-                                    else
-                                    {
-                                        KontoSaldon[UserIndex][KontoNummer - 1] -= Summa;
-                                        Console.WriteLine($"Nytt saldo: {AnvändarKonton[UserIndex][KontoNummer - 1]} : {KontoSaldon[UserIndex][KontoNummer - 1]} \n");
-                                    }
-                                    break;
-                                }
+                                KontoUtdrag(UserIndex, AnvändarKonton, KontoSaldon, PinKodArray);
                                 Console.WriteLine("Enter för att komma tillbaka till huvudmenyn");
                                 Console.ReadLine();
                                 break;
                             case 4:
-                                Console.WriteLine($"Hej då {StringTemp}");
+                                Console.WriteLine($"Hej då {StringTemp}! \n");
+                                Console.WriteLine("Välkommen till TheodorBank skriv in ditt användarnamn och pin-kod för att fortsätta! \n");
                                 StringTemp = "";
                                 break;
                             default:
@@ -196,7 +212,7 @@
                 else
                 {
                     PinAttempts++;
-                    Console.WriteLine("Fel lösenord eller Användarnamn");
+                    Console.WriteLine("Fel lösenord eller Användarnamn \n");
                     if (PinAttempts == 3)
                     {
                         Console.WriteLine($"Du har använt alla dina försök du måste vänta {LockoutTime} minuter innana du kan försöak igen!");
