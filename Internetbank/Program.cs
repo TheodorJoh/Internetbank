@@ -28,8 +28,7 @@
             {
                 Console.WriteLine($"{AnvändarKonton[UserIndex][i]} : {KontoSaldon[UserIndex][i]}");
             }
-            Console.WriteLine("Enter för att komma tillbaka till huvudmenyn");
-            Console.ReadLine();
+
         }
 
         //This method handles the transferes between accounts.
@@ -39,53 +38,59 @@
         {
             while (true)
             {
+                List<int> Positioner = new List<int>();
                 Console.WriteLine("Vilket konto vill du överföra pengar från?");
                 for (int i = 0; i < AnvändarKonton[UserIndex].Count; i++)
                 {
-                    Console.WriteLine($"{i + 1}. {AnvändarKonton[UserIndex][i]}");
+                    Console.WriteLine($"{i + 1}. {AnvändarKonton[UserIndex][i]} : {KontoSaldon[UserIndex][i]}");
                 }
 
                 Console.Write("Välj: ");
-                if (!(int.TryParse(Console.ReadLine(), out int KontoNummer) && KontoNummer <= AnvändarKonton[UserIndex].Count && KontoNummer >= 1))
+                if (!(int.TryParse(Console.ReadLine(), out int FrånIndex) && FrånIndex <= AnvändarKonton[UserIndex].Count && FrånIndex >= 1))
                 {
                     Console.WriteLine("Ogiltigt val");
                     continue;
                 }
+                FrånIndex = FrånIndex - 1;
                 Console.WriteLine("");
+                for (int i = 0; i < AnvändarKonton[UserIndex].Count; i++)
+                {
+                    if(i == FrånIndex)
+                    {
+                        continue;
+                    }
+                    Positioner.Add(i);
+                }
 
 
                 Console.WriteLine("Vilket konto vill du överföra pengar till?");
-                for (int i = 0; i < AnvändarKonton[UserIndex].Count; i++)
+                for (int i = 0; i < Positioner.Count; i++)
                 {
-                    Console.WriteLine($"{i + 1}. {AnvändarKonton[UserIndex][i]}");
+                    Console.WriteLine($"{i + 1}. {AnvändarKonton[UserIndex][Positioner[i]]} : {KontoSaldon[UserIndex][Positioner[i]]} ");
                 }
                 Console.Write("Välj: ");
-                if (!(int.TryParse(Console.ReadLine(), out int KontoNummer2) && KontoNummer2 <= AnvändarKonton[UserIndex].Count && KontoNummer2 >= 1))
+                if (!(int.TryParse(Console.ReadLine(), out int Val) && Val <= Positioner.Count && Val >= 1))
                 {
                     Console.WriteLine("Ogiltigt val");
                     continue;
                 }
                 Console.WriteLine("");
-                if (KontoNummer == KontoNummer2)
-                {
-                    Console.WriteLine("Du kan inte överföra pengar till samma konto.");
-                    Console.WriteLine();
-                    continue;
-                }
+               
+               int TillIndex = Positioner[Val - 1];
 
                 Console.WriteLine("Hur mycket vill du överföra? \n");
                 Console.Write("Summa: ");
 
-                if (!(decimal.TryParse(Console.ReadLine(), out decimal Överföra) && Överföra > 0 && Överföra <= KontoSaldon[UserIndex][KontoNummer - 1]))
+                if (!(decimal.TryParse(Console.ReadLine(), out decimal Överföra) && Överföra > 0 && Överföra <= KontoSaldon[UserIndex][FrånIndex]))
                 {
                     Console.WriteLine("Ogiltigt val");
                     continue;
                 }
                 Console.WriteLine("");
-                KontoSaldon[UserIndex][KontoNummer - 1] -= Överföra;
-                KontoSaldon[UserIndex][KontoNummer2 - 1] += Överföra;
-                Console.WriteLine($"{AnvändarKonton[UserIndex][KontoNummer - 1]} : {KontoSaldon[UserIndex][KontoNummer - 1]}");
-                Console.WriteLine($"{AnvändarKonton[UserIndex][KontoNummer2 - 1]} : {KontoSaldon[UserIndex][KontoNummer2 - 1]}\n");
+                KontoSaldon[UserIndex][FrånIndex] -= Överföra;
+                KontoSaldon[UserIndex][TillIndex] += Överföra;
+                Console.WriteLine($"{AnvändarKonton[UserIndex][FrånIndex]} : {KontoSaldon[UserIndex][FrånIndex]}");
+                Console.WriteLine($"{AnvändarKonton[UserIndex][TillIndex]} : {KontoSaldon[UserIndex][TillIndex]}\n");
 
                 break;
             }
@@ -207,6 +212,8 @@
                         switch (MenyVal){
                             case 1:
                                 VisaKonton(UserIndex, AnvändarKonton, KontoSaldon);
+                                Console.WriteLine("Enter för att komma tillbaka till huvudmenyn");
+                                Console.ReadLine();
                                 break;
                             case 2:
                                 KontoÖverföring(UserIndex, AnvändarKonton, KontoSaldon);
