@@ -26,7 +26,7 @@
         {
             for (int i = 0; i < AnvändarKonton[UserIndex].Count; i++)
             {
-                Console.WriteLine($"{AnvändarKonton[UserIndex][i]} : {KontoSaldon[UserIndex][i]}");
+                Console.WriteLine($"{AnvändarKonton[UserIndex][i]} : {KontoSaldon[UserIndex][i]:N2}");
             }
 
         }
@@ -47,7 +47,7 @@
                 Console.WriteLine("Vilket konto vill du överföra pengar från?");
                 for (int i = 0; i < AnvändarKonton[UserIndex].Count; i++)
                 {
-                    Console.WriteLine($"{i + 1}. {AnvändarKonton[UserIndex][i]} : {KontoSaldon[UserIndex][i]}");
+                    Console.WriteLine($"{i + 1}. {AnvändarKonton[UserIndex][i]} : {KontoSaldon[UserIndex][i]:N2}");
                 }
 
                 Console.Write("Välj: ");
@@ -71,7 +71,7 @@
                 Console.WriteLine("Vilket konto vill du överföra pengar till?");
                 for (int i = 0; i < Positioner.Count; i++)
                 {
-                    Console.WriteLine($"{i + 1}. {AnvändarKonton[UserIndex][Positioner[i]]} : {KontoSaldon[UserIndex][Positioner[i]]} ");
+                    Console.WriteLine($"{i + 1}. {AnvändarKonton[UserIndex][Positioner[i]]} : {KontoSaldon[UserIndex][Positioner[i]]:N2} ");
                 }
                 Console.Write("Välj: ");
                 if (!(int.TryParse(Console.ReadLine(), out int Val) && Val <= Positioner.Count && Val >= 1))
@@ -86,16 +86,22 @@
                 Console.WriteLine("Hur mycket vill du överföra? \n");
                 Console.Write("Summa: ");
 
-                if (!(decimal.TryParse(Console.ReadLine(), out decimal Överföra) && Överföra > 0 && Överföra <= KontoSaldon[UserIndex][FrånIndex]))
+                if (!(decimal.TryParse(Console.ReadLine(), out decimal Överföra) && Överföra > 0 ))
                 {
                     Console.WriteLine("Ogiltigt val");
+                    continue;
+                }
+
+                if(Överföra > KontoSaldon[UserIndex][FrånIndex])
+                {
+                    Console.WriteLine("Du har inte tillräckligt med pengar på kontot");
                     continue;
                 }
                 Console.WriteLine("");
                 KontoSaldon[UserIndex][FrånIndex] -= Överföra;
                 KontoSaldon[UserIndex][TillIndex] += Överföra;
-                Console.WriteLine($"{AnvändarKonton[UserIndex][FrånIndex]} : {KontoSaldon[UserIndex][FrånIndex]}");
-                Console.WriteLine($"{AnvändarKonton[UserIndex][TillIndex]} : {KontoSaldon[UserIndex][TillIndex]}\n");
+                Console.WriteLine($"{AnvändarKonton[UserIndex][FrånIndex]} : {KontoSaldon[UserIndex][FrånIndex]:N2}");
+                Console.WriteLine($"{AnvändarKonton[UserIndex][TillIndex]} : {KontoSaldon[UserIndex][TillIndex]:N2}\n");
 
                 break;
             }
@@ -111,7 +117,7 @@
                 Console.WriteLine("Vilket konto vill du ta ut pengar från?");
                 for (int i = 0; i < AnvändarKonton[UserIndex].Count; i++)
                 {
-                    Console.WriteLine($"{i + 1}. {AnvändarKonton[UserIndex][i]} : {KontoSaldon[UserIndex][i]}");
+                    Console.WriteLine($"{i + 1}. {AnvändarKonton[UserIndex][i]} : {KontoSaldon[UserIndex][i]:N2}");
                 }
                 Console.Write("Välj: ");
                 if (!(int.TryParse(Console.ReadLine(), out int KontoNummer) && KontoNummer <= AnvändarKonton[UserIndex].Count && KontoNummer >= 1))
@@ -121,9 +127,15 @@
                 }
                 Console.WriteLine("");
                 Console.WriteLine("Hur mycket vill du ta ut?");
-                if (!(decimal.TryParse(Console.ReadLine(), out decimal Summa) && Summa > 0 && Summa <= KontoSaldon[UserIndex][KontoNummer - 1]))
+                Console.Write("Summa: ");
+                if (!(decimal.TryParse(Console.ReadLine(), out decimal Summa) && Summa > 0))
                 {
                     Console.WriteLine("Ogiltigt val");
+                    continue;
+                }
+                if(Summa > KontoSaldon[UserIndex][KontoNummer - 1])
+                {
+                    Console.WriteLine("Du har inte tillräckligt med pengar på kontot");
                     continue;
                 }
                 Console.WriteLine("");
@@ -144,7 +156,7 @@
                 else
                 {
                     KontoSaldon[UserIndex][KontoNummer - 1] -= Summa;
-                    Console.WriteLine($"Nytt saldo: {AnvändarKonton[UserIndex][KontoNummer - 1]} : {KontoSaldon[UserIndex][KontoNummer - 1]} \n");
+                    Console.WriteLine($"Nytt saldo: {AnvändarKonton[UserIndex][KontoNummer - 1]} : {KontoSaldon[UserIndex][KontoNummer - 1]:N2} \n");
                 }
                 break;
             }
@@ -182,7 +194,7 @@
             //List for the different balances.
             List<List<decimal>> KontoSaldon = new List<List<decimal>>
             {
-                new List<decimal> {23000,54m, 150000.54m, 3000.44m, 150045m},
+                new List<decimal> {23000.54m, 150000.54m, 3000.44m, 1500.45m},
                 new List<decimal> {23000.34m, 150000.35m, 15000.35m},
                 new List<decimal> {23000, 150000, 2500},
                 new List<decimal> {23000, 50000, 200000},
