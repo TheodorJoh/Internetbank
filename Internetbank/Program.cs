@@ -38,6 +38,11 @@
         {
             while (true)
             {
+                if (AnvändarKonton[UserIndex].Count <= 1)
+                {
+                    Console.WriteLine("Kan inte överföra med bara ett konto");
+                    break;
+                }
                 List<int> Positioner = new List<int>();
                 Console.WriteLine("Vilket konto vill du överföra pengar från?");
                 for (int i = 0; i < AnvändarKonton[UserIndex].Count; i++)
@@ -106,7 +111,7 @@
                 Console.WriteLine("Vilket konto vill du ta ut pengar från?");
                 for (int i = 0; i < AnvändarKonton[UserIndex].Count; i++)
                 {
-                    Console.WriteLine($"{i + 1} : {AnvändarKonton[UserIndex][i]} : {KontoSaldon[UserIndex][i]}");
+                    Console.WriteLine($"{i + 1}. {AnvändarKonton[UserIndex][i]} : {KontoSaldon[UserIndex][i]}");
                 }
                 Console.Write("Välj: ");
                 if (!(int.TryParse(Console.ReadLine(), out int KontoNummer) && KontoNummer <= AnvändarKonton[UserIndex].Count && KontoNummer >= 1))
@@ -164,21 +169,21 @@
             //Array for the different usernames.
             string[] AnvändarNamnArray = { "Theodor", "Anas", "Shenol", "Zandra", "Albion" };
             //Array for the different pincodes associated to each username.
-            int[] PinKodArray = { 1337, 2026, 3337, 4337, 5337 };
+            int[] PinKodArray = { 1337, 0026, 3337, 4337, 5337 };
             //List for the different accounts.
             List<List<string>> AnvändarKonton = new List<List<string>>
             {
                 new List<string> {"LöneKonto", "SparKonto", "MatKonto", "Övrigt"},
                 new List<string> {"LöneKonto", "SparKonto", "ReseKonto"},
                 new List<string> {"PrivatKonto", "FondKonto", "DjurKonto"},
-                new List<string> {"LöneKonto", "HusKonto", "FondKonto"},
+                new List<string> {"LöneKonto"},
                 new List<string> {"LöneKonto", "SparKonto", "MatKonto", "Övrigt", "DjurKonto", "HusKonto"}
             };
             //List for the different balances.
             List<List<decimal>> KontoSaldon = new List<List<decimal>>
             {
-                new List<decimal> {23000, 150000, 3000, 1500},
-                new List<decimal> {23000, 150000, 15000},
+                new List<decimal> {23000,54m, 150000.54m, 3000.44m, 150045m},
+                new List<decimal> {23000.34m, 150000.35m, 15000.35m},
                 new List<decimal> {23000, 150000, 2500},
                 new List<decimal> {23000, 50000, 200000},
                 new List<decimal> { 23000, 150000, 3000, 1500, 2500, 50000}
@@ -212,23 +217,24 @@
                         switch (MenyVal){
                             case 1:
                                 VisaKonton(UserIndex, AnvändarKonton, KontoSaldon);
-                                Console.WriteLine("Enter för att komma tillbaka till huvudmenyn");
+                                Console.WriteLine("Klicka enter för att komma till huvudmenyn");
                                 Console.ReadLine();
                                 break;
                             case 2:
                                 KontoÖverföring(UserIndex, AnvändarKonton, KontoSaldon);
-                                Console.WriteLine("Enter för att komma tillbaka till huvudmenyn");
+                                Console.WriteLine("Klicka enter för att komma till huvudmenyn");
                                 Console.ReadLine();
 
                                 break;
                             case 3:
                                 KontoUtdrag(UserIndex, AnvändarKonton, KontoSaldon, PinKodArray);
-                                Console.WriteLine("Enter för att komma tillbaka till huvudmenyn");
+                                Console.WriteLine("Klicka enter för att komma till huvudmenyn");
                                 Console.ReadLine();
                                 break;
                             case 4:
                                 Console.WriteLine($"Hej då {StringTemp}! \n");
                                 Console.WriteLine("Välkommen till TheodorBank skriv in ditt användarnamn och pin-kod för att fortsätta! \n");
+                                PinAttempts = 0;
                                 StringTemp = "";
                                 break;
                             default:
