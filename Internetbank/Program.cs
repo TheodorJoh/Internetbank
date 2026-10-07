@@ -253,7 +253,14 @@
                 Console.Write("Användarnamn: ");
                 StringTemp = Console.ReadLine();
                 Console.Write("Pin-kod (4 siffror): ");
-                int.TryParse(Console.ReadLine(), out PinKod);
+                try
+                {
+                    PinKod = Int32.Parse(Console.ReadLine());
+                }
+                catch (FormatException)
+                {
+                    PinKod = -1;
+                }
                 Console.WriteLine("");
                 if (CheckLogin(StringTemp, PinKod, AnvändarNamnArray, PinKodArray, out UserIndex))
                 {
@@ -266,10 +273,20 @@
                         Console.WriteLine("3. Ta ut pengar");
                         Console.WriteLine("4. Logga ut");
                         Console.Write("Välj (1-4): ");
-                        if (!(int.TryParse(Console.ReadLine(), out MenyVal) && MenyVal <= 4 && MenyVal >= 1))
+                        while(true)
                         {
-                            Console.WriteLine("Ogiltigt val");
-                            continue;
+                            Console.Write("Välj (1-4): ");
+                            try
+                            {
+                                MenyVal = Int32.Parse(Console.ReadLine());
+                                if( MenyVal < 1 || MenyVal > 4)
+                                {
+                                    throw new ArgumentOutOfRangeException();
+                                }
+                                break;
+                            }
+                            catch (FormatException) { Console.WriteLine("Ogiltigt val, var snäll och skriv in ett nummer!"); }
+                            catch (ArgumentOutOfRangeException) { Console.WriteLine("Ogiltigt val, var snäll och skriv in ett nummer mellan 1-4"); }
                         }
                         Console.WriteLine("");
                         switch (MenyVal)
