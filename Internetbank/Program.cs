@@ -4,12 +4,12 @@
     {
         //This method checks if the correct credentials have been inputed when you login. The mehod has 5 paramters and these are AnvändarNamn which is the username the user inputed and the same with PinKod except it is for the users password.
         //The two array paramters AnvändarNamnArray and PinKodArray are used to check if the inputed username and password are correct and then lastly the UserIndex is outputed so that we later can used that to identify the right account for the right user.
-        
+
         static bool CheckLogin(string AnvändarNamn, int PinKod, string[] AnvändarNamnArray, int[] PinKodArray, out int UserIndex)
         {
-            for(int i = 0; i < AnvändarNamnArray.Length;i++)
+            for (int i = 0; i < AnvändarNamnArray.Length; i++)
             {
-                if(AnvändarNamn == AnvändarNamnArray[i] && PinKod == PinKodArray[i])
+                if (AnvändarNamn == AnvändarNamnArray[i] && PinKod == PinKodArray[i])
                 {
                     UserIndex = i;
                     return true;
@@ -33,155 +33,177 @@
 
         //This method handles the transferes between accounts.
         //The method takes 3 paramters, UserIndex which is used to located the right account, AnvändarKonton which is where all the accounts are located and then KontoSaldon which is where all the balancs are stored.
-        
-          static void KontoÖverföring(int UserIndex, List<List<String>> AnvändarKonton, List<List<decimal>> KontoSaldon)
+
+        static void KontoÖverföring(int UserIndex, List<List<String>> AnvändarKonton, List<List<decimal>> KontoSaldon)
         {
+            int FrånIndex;
+            int Val;
+            if (AnvändarKonton[UserIndex].Count <= 1)
+            {
+                Console.WriteLine("Kan inte överföra med bara ett konto");
+                return;
+            }
+            List<int> Positioner = new List<int>();
+            Console.WriteLine("Vilket konto vill du överföra pengar från?");
+            for (int i = 0; i < AnvändarKonton[UserIndex].Count; i++)
+            {
+                Console.WriteLine($"{i + 1}. {AnvändarKonton[UserIndex][i]} : {KontoSaldon[UserIndex][i]:N2}");
+            }
+
+
             while (true)
             {
-                if (AnvändarKonton[UserIndex].Count <= 1)
+                Console.Write("Välj: ");
+                try
                 {
-                    Console.WriteLine("Kan inte överföra med bara ett konto");
+                    FrånIndex = Int32.Parse(Console.ReadLine());
+                    if (FrånIndex < 1 || FrånIndex > AnvändarKonton[UserIndex].Count)
+                    {
+                        throw new ArgumentOutOfRangeException();
+                    }
                     break;
                 }
-                List<int> Positioner = new List<int>();
-                Console.WriteLine("Vilket konto vill du överföra pengar från?");
-                for (int i = 0; i < AnvändarKonton[UserIndex].Count; i++)
+                catch (FormatException) { Console.WriteLine("Ogiltigt val, var snäll skriv in ett nummer!"); }
+                catch (ArgumentOutOfRangeException) { Console.WriteLine($"Ogiltigt val, var snäll och skriv in ett nummer mellan 1-{AnvändarKonton[UserIndex].Count}"); }
+            }
+            FrånIndex = FrånIndex - 1;
+            Console.WriteLine("");
+            for (int i = 0; i < AnvändarKonton[UserIndex].Count; i++)
+            {
+                if (i == FrånIndex)
                 {
-                    Console.WriteLine($"{i + 1}. {AnvändarKonton[UserIndex][i]} : {KontoSaldon[UserIndex][i]:N2}");
-                }
-
-                Console.Write("Välj: ");
-                if (!(int.TryParse(Console.ReadLine(), out int FrånIndex) && FrånIndex <= AnvändarKonton[UserIndex].Count && FrånIndex >= 1))
-                {
-                    Console.WriteLine("Ogiltigt val");
                     continue;
                 }
-                FrånIndex = FrånIndex - 1;
-                Console.WriteLine("");
-                for (int i = 0; i < AnvändarKonton[UserIndex].Count; i++)
+                Positioner.Add(i);
+            }
+
+
+            Console.WriteLine("Vilket konto vill du överföra pengar till?");
+            for (int i = 0; i < Positioner.Count; i++)
+            {
+                Console.WriteLine($"{i + 1}. {AnvändarKonton[UserIndex][Positioner[i]]} : {KontoSaldon[UserIndex][Positioner[i]]:N2} ");
+            }
+            while (true)
+            {
+                Console.Write("Välj: ");
+                try
                 {
-                    if(i == FrånIndex)
+                    Val = Int32.Parse(Console.ReadLine());
+                    if (Val < 1 || Val > Positioner.Count)
                     {
+                        throw new ArgumentOutOfRangeException();
+                    }
+                    break;
+                }
+                catch (FormatException) { Console.WriteLine("Ogiltigt val, var snäll skriv in ett nummer!"); }
+                catch (ArgumentOutOfRangeException) { Console.WriteLine($"Ogiltigt val, var snäll och skriv in ett nummer mellan 1-{Positioner.Count}"); }
+            }
+            Console.WriteLine("");
+
+            int TillIndex = Positioner[Val - 1];
+            decimal Överföra;
+            while (true)
+            {
+                Console.Write("Summa: ");
+                try
+                {
+
+                    Överföra = decimal.Parse(Console.ReadLine());
+                    if (Överföra <= 0)
+                    {
+                        throw new ArgumentOutOfRangeException();
+                    }
+
+                    if (Överföra > KontoSaldon[UserIndex][FrånIndex])
+                    {
+                        Console.WriteLine("Du har inte tillräckligt med pengar på kontot");
                         continue;
                     }
-                    Positioner.Add(i);
+                    break;
                 }
-
-
-                Console.WriteLine("Vilket konto vill du överföra pengar till?");
-                for (int i = 0; i < Positioner.Count; i++)
-                {
-                    Console.WriteLine($"{i + 1}. {AnvändarKonton[UserIndex][Positioner[i]]} : {KontoSaldon[UserIndex][Positioner[i]]:N2} ");
-                }
-                Console.Write("Välj: ");
-                if (!(int.TryParse(Console.ReadLine(), out int Val) && Val <= Positioner.Count && Val >= 1))
-                {
-                    Console.WriteLine("Ogiltigt val");
-                    continue;
-                }
-                Console.WriteLine("");
-               
-               int TillIndex = Positioner[Val - 1];
-
-                Console.WriteLine("Hur mycket vill du överföra? \n");
-                Console.Write("Summa: ");
-
-                if (!(decimal.TryParse(Console.ReadLine(), out decimal Överföra) && Överföra > 0 ))
-                {
-                    Console.WriteLine("Ogiltigt val");
-                    continue;
-                }
-
-                if(Överföra > KontoSaldon[UserIndex][FrånIndex])
-                {
-                    Console.WriteLine("Du har inte tillräckligt med pengar på kontot");
-                    continue;
-                }
-                Console.WriteLine("");
-                KontoSaldon[UserIndex][FrånIndex] -= Överföra;
-                KontoSaldon[UserIndex][TillIndex] += Överföra;
-                Console.WriteLine($"{AnvändarKonton[UserIndex][FrånIndex]} : {KontoSaldon[UserIndex][FrånIndex]:N2}");
-                Console.WriteLine($"{AnvändarKonton[UserIndex][TillIndex]} : {KontoSaldon[UserIndex][TillIndex]:N2}\n");
-
-                break;
+                catch (FormatException) { Console.WriteLine("Ogiltigt val, var snäll skriv in ett nummer!"); }
+                catch (ArgumentOutOfRangeException) { Console.WriteLine("Ogiltigt val, var snäll och skriv in ett nummer större än 0"); }
             }
+
+            Console.WriteLine("");
+            KontoSaldon[UserIndex][FrånIndex] -= Överföra;
+            KontoSaldon[UserIndex][TillIndex] += Överföra;
+            Console.WriteLine($"{AnvändarKonton[UserIndex][FrånIndex]} : {KontoSaldon[UserIndex][FrånIndex]:N2}");
+            Console.WriteLine($"{AnvändarKonton[UserIndex][TillIndex]} : {KontoSaldon[UserIndex][TillIndex]:N2}\n");
         }
 
         //This method handles taking out money from an account.
         //The method takes 3 paramters, UserIndex which is used to located the right account, AnvändarKonton which is where all the accounts are located and then KontoSaldon which is where all the balancs are stored.
         //The method also needs the PinKodArray so that it can check if the inputed pinkod is correct.
-        static void KontoUtdrag(int UserIndex, List<List<String>> AnvändarKonton, List<List<decimal>> KontoSaldon, int[] PinKodArray) 
+        static void KontoUtdrag(int UserIndex, List<List<String>> AnvändarKonton, List<List<decimal>> KontoSaldon, int[] PinKodArray)
         {
-                int PinKod2;
-                decimal Summa;
-                int KontoNummer;
-                Console.WriteLine("Vilket konto vill du ta ut pengar från?");
-                for (int i = 0; i < AnvändarKonton[UserIndex].Count; i++)
-                {
-                    Console.WriteLine($"{i + 1}. {AnvändarKonton[UserIndex][i]} : {KontoSaldon[UserIndex][i]:N2}");
-                }
-                
-                while(true)
-                {
-                    Console.Write("Välj: ");
-                    try
-                    {
-                        KontoNummer = Int32.Parse(Console.ReadLine());
-                        if(KontoNummer > AnvändarKonton[UserIndex].Count || KontoNummer < 1)
-                        {
-                            throw new ArgumentOutOfRangeException();
-                        }
-                        break;
-                    } 
-                    catch (FormatException) { Console.WriteLine("Ogiltigt val, var snäll skriv in ett nummer!"); }
-                    catch (ArgumentOutOfRangeException) { Console.WriteLine($"Ogiltigt val, var snäll och skriv in ett nummer mellan 1-{AnvändarKonton[UserIndex].Count}");}
-                }
-                Console.WriteLine("");
-                while (true)
-                {
-                    Console.Write("Summa: ");
-                    try
-                    {
-                        Summa = decimal.Parse(Console.ReadLine());
+            int PinKod2;
+            decimal Summa;
+            int KontoNummer;
+            Console.WriteLine("Vilket konto vill du ta ut pengar från?");
+            for (int i = 0; i < AnvändarKonton[UserIndex].Count; i++)
+            {
+                Console.WriteLine($"{i + 1}. {AnvändarKonton[UserIndex][i]} : {KontoSaldon[UserIndex][i]:N2}");
+            }
 
-                        if (Summa <= 0)
-                        {
-                            throw new ArgumentOutOfRangeException();
-                        }
-                        if (Summa > KontoSaldon[UserIndex][KontoNummer - 1])
-                        {
-                            Console.WriteLine("Du har inte tillräckligt med pengar på kontot");
-                            continue;
-                        }
+            while (true)
+            {
+                Console.Write("Välj: ");
+                try
+                {
+                    KontoNummer = Int32.Parse(Console.ReadLine());
+                    if (KontoNummer > AnvändarKonton[UserIndex].Count || KontoNummer < 1)
+                    {
+                        throw new ArgumentOutOfRangeException();
+                    }
+                    break;
+                }
+                catch (FormatException) { Console.WriteLine("Ogiltigt val, var snäll skriv in ett nummer!"); }
+                catch (ArgumentOutOfRangeException) { Console.WriteLine($"Ogiltigt val, var snäll och skriv in ett nummer mellan 1-{AnvändarKonton[UserIndex].Count}"); }
+            }
+            Console.WriteLine("");
+            while (true)
+            {
+                Console.Write("Summa: ");
+                try
+                {
+                    Summa = decimal.Parse(Console.ReadLine());
+
+                    if (Summa <= 0)
+                    {
+                        throw new ArgumentOutOfRangeException();
+                    }
+                    if (Summa > KontoSaldon[UserIndex][KontoNummer - 1])
+                    {
+                        Console.WriteLine("Du har inte tillräckligt med pengar på kontot");
+                        continue;
+                    }
+                    break;
+                }
+                catch (FormatException) { Console.WriteLine("Ogiltigt val, var snäll och skriv in ett nummer!"); }
+                catch (ArgumentOutOfRangeException) { Console.WriteLine("Ogiltigt val, var snäll och skriv in ett nummer större än 0"); }
+            }
+
+            Console.WriteLine("");
+            while (true)
+            {
+                Console.Write("Ange Pinkod: ");
+                try
+                {
+                    PinKod2 = Int32.Parse(Console.ReadLine());
+                    if (PinKod2 == PinKodArray[UserIndex])
+                    {
                         break;
                     }
-                    catch (FormatException) { Console.WriteLine("Ogiltigt val, var snäll och skriv in ett nummer!"); }
-                    catch (ArgumentOutOfRangeException) { Console.WriteLine("Ogiltigt val, var snäll och skriv in ett nummer större än 0"); }
-                }
-                
-                Console.WriteLine("");
-
-
-                
-                while(true)
-                {
-                    Console.Write("Ange Pinkod: ");
-                    try
+                    else
                     {
-                        PinKod2 = Int32.Parse(Console.ReadLine());
-                        if(PinKod2 == PinKodArray[UserIndex]) 
-                        {
-                            break;
-                        }
-                        else
-                        {
-                            Console.WriteLine("Fel pinkod, Försök igen!");
-                        }
+                        Console.WriteLine("Fel pinkod, Försök igen!");
                     }
-                    catch (FormatException) { Console.WriteLine("Ogiltigt val, var snäll och skriv in ett nummer!"); }
                 }
-                    KontoSaldon[UserIndex][KontoNummer - 1] -= Summa;
-                    Console.WriteLine($"Nytt saldo: {AnvändarKonton[UserIndex][KontoNummer - 1]} : {KontoSaldon[UserIndex][KontoNummer - 1]:N2} \n");
+                catch (FormatException) { Console.WriteLine("Ogiltigt val, var snäll och skriv in ett nummer!"); }
+            }
+            KontoSaldon[UserIndex][KontoNummer - 1] -= Summa;
+            Console.WriteLine($"Nytt saldo: {AnvändarKonton[UserIndex][KontoNummer - 1]} : {KontoSaldon[UserIndex][KontoNummer - 1]:N2} \n");
         }
 
 
@@ -226,7 +248,8 @@
 
             Console.WriteLine("Välkommen till TheodorBank skriv in ditt användarnamn och pin-kod för att fortsätta! \n");
 
-            while(true) {
+            while (true)
+            {
                 Console.Write("Användarnamn: ");
                 StringTemp = Console.ReadLine();
                 Console.Write("Pin-kod (4 siffror): ");
@@ -249,7 +272,8 @@
                             continue;
                         }
                         Console.WriteLine("");
-                        switch (MenyVal){
+                        switch (MenyVal)
+                        {
                             case 1:
                                 VisaKonton(UserIndex, AnvändarKonton, KontoSaldon);
                                 Console.WriteLine("Klicka enter för att komma till huvudmenyn");
@@ -299,4 +323,5 @@
                 }
             }
         }
-    } }
+    }
+}
