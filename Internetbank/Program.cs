@@ -28,7 +28,8 @@
             {
                 Console.WriteLine($"{AnvändarKonton[UserIndex][i]} : {KontoSaldon[UserIndex][i]:N2}");
             }
-
+            Console.WriteLine("Klicka enter för att komma till huvudmenyn");
+            Console.ReadLine();
         }
 
         //This method handles the transferes between accounts.
@@ -54,9 +55,15 @@
             while (true)
             {
                 Console.Write("Välj: ");
+                string Input = Console.ReadLine();
+                if("stop" == Input.ToLower())
+                {
+                    return;
+                }
                 try
                 {
-                    FrånIndex = Int32.Parse(Console.ReadLine());
+                    FrånIndex = Int32.Parse(Input);
+                    
                     if (FrånIndex < 1 || FrånIndex > AnvändarKonton[UserIndex].Count)
                     {
                         throw new ArgumentOutOfRangeException();
@@ -86,6 +93,11 @@
             while (true)
             {
                 Console.Write("Välj: ");
+                string Input = Console.ReadLine();
+                if ("stop" == Input.ToLower())
+                {
+                    return;
+                }
                 try
                 {
                     Val = Int32.Parse(Console.ReadLine());
@@ -105,6 +117,11 @@
             while (true)
             {
                 Console.Write("Summa: ");
+                string Input = Console.ReadLine();
+                if ("stop" == Input.ToLower())
+                {
+                    return;
+                }
                 try
                 {
 
@@ -130,6 +147,8 @@
             KontoSaldon[UserIndex][TillIndex] += Överföra;
             Console.WriteLine($"{AnvändarKonton[UserIndex][FrånIndex]} : {KontoSaldon[UserIndex][FrånIndex]:N2}");
             Console.WriteLine($"{AnvändarKonton[UserIndex][TillIndex]} : {KontoSaldon[UserIndex][TillIndex]:N2}\n");
+            Console.WriteLine("Klicka enter för att komma till huvudmenyn");
+            Console.ReadLine();
         }
 
         //This method handles taking out money from an account.
@@ -149,6 +168,11 @@
             while (true)
             {
                 Console.Write("Välj: ");
+                string Input = Console.ReadLine();
+                if ("stop" == Input.ToLower())
+                {
+                    return;
+                }
                 try
                 {
                     KontoNummer = Int32.Parse(Console.ReadLine());
@@ -165,6 +189,11 @@
             while (true)
             {
                 Console.Write("Summa: ");
+                string Input = Console.ReadLine();
+                if ("stop" == Input.ToLower())
+                {
+                    return;
+                }
                 try
                 {
                     Summa = decimal.Parse(Console.ReadLine());
@@ -188,6 +217,11 @@
             while (true)
             {
                 Console.Write("Ange Pinkod: ");
+                string Input = Console.ReadLine();
+                if ("stop" == Input.ToLower())
+                {
+                    return;
+                }
                 try
                 {
                     PinKod2 = Int32.Parse(Console.ReadLine());
@@ -204,6 +238,8 @@
             }
             KontoSaldon[UserIndex][KontoNummer - 1] -= Summa;
             Console.WriteLine($"Nytt saldo: {AnvändarKonton[UserIndex][KontoNummer - 1]} : {KontoSaldon[UserIndex][KontoNummer - 1]:N2} \n");
+            Console.WriteLine("Klicka enter för att komma till huvudmenyn");
+            Console.ReadLine();
         }
 
 
@@ -272,7 +308,6 @@
                         Console.WriteLine("2. Överföring mellan konton");
                         Console.WriteLine("3. Ta ut pengar");
                         Console.WriteLine("4. Logga ut");
-                        Console.Write("Välj (1-4): ");
                         while(true)
                         {
                             Console.Write("Välj (1-4): ");
@@ -293,19 +328,12 @@
                         {
                             case 1:
                                 VisaKonton(UserIndex, AnvändarKonton, KontoSaldon);
-                                Console.WriteLine("Klicka enter för att komma till huvudmenyn");
-                                Console.ReadLine();
                                 break;
                             case 2:
                                 KontoÖverföring(UserIndex, AnvändarKonton, KontoSaldon);
-                                Console.WriteLine("Klicka enter för att komma till huvudmenyn");
-                                Console.ReadLine();
-
                                 break;
                             case 3:
                                 KontoUtdrag(UserIndex, AnvändarKonton, KontoSaldon, PinKodArray);
-                                Console.WriteLine("Klicka enter för att komma till huvudmenyn");
-                                Console.ReadLine();
                                 break;
                             case 4:
                                 Console.WriteLine($"Hej då {StringTemp}! \n");
