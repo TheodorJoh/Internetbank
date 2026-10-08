@@ -42,6 +42,8 @@
             if (AnvändarKonton[UserIndex].Count <= 1)
             {
                 Console.WriteLine("Kan inte överföra med bara ett konto");
+                Console.WriteLine("Klicka enter för att komma till huvudmenyn");
+                Console.ReadLine();
                 return;
             }
             List<int> Positioner = new List<int>();
@@ -100,7 +102,7 @@
                 }
                 try
                 {
-                    Val = Int32.Parse(Console.ReadLine());
+                    Val = Int32.Parse(Input);
                     if (Val < 1 || Val > Positioner.Count)
                     {
                         throw new ArgumentOutOfRangeException();
@@ -125,7 +127,7 @@
                 try
                 {
 
-                    Överföra = decimal.Parse(Console.ReadLine());
+                    Överföra = decimal.Parse(Input);
                     if (Överföra <= 0)
                     {
                         throw new ArgumentOutOfRangeException();
@@ -156,6 +158,9 @@
         //The method also needs the PinKodArray so that it can check if the inputed pinkod is correct.
         static void KontoUtdrag(int UserIndex, List<List<String>> AnvändarKonton, List<List<decimal>> KontoSaldon, int[] PinKodArray)
         {
+            int PinAttempts = 0;
+            int PinMax = 3;
+            int LockoutTime = 2;
             int PinKod2;
             decimal Summa;
             int KontoNummer;
@@ -175,7 +180,7 @@
                 }
                 try
                 {
-                    KontoNummer = Int32.Parse(Console.ReadLine());
+                    KontoNummer = Int32.Parse(Input);
                     if (KontoNummer > AnvändarKonton[UserIndex].Count || KontoNummer < 1)
                     {
                         throw new ArgumentOutOfRangeException();
@@ -196,7 +201,7 @@
                 }
                 try
                 {
-                    Summa = decimal.Parse(Console.ReadLine());
+                    Summa = decimal.Parse(Input);
 
                     if (Summa <= 0)
                     {
@@ -216,6 +221,21 @@
             Console.WriteLine("");
             while (true)
             {
+                if (PinAttempts == 3)
+                {
+                    Console.WriteLine($"Du har använt alla dina försök du måste vänta {LockoutTime} minuter innana du kan försöak igen!");
+                    DateTime startTime = DateTime.UtcNow;
+                    TimeSpan breakDuration = TimeSpan.FromMinutes(LockoutTime);
+                    while (true)
+                    {
+                        if (DateTime.UtcNow - startTime > breakDuration)
+                        {
+                            LockoutTime = LockoutTime * 2;
+                            PinAttempts = 0;
+                            break;
+                        }
+                    }
+                }
                 Console.Write("Ange Pinkod: ");
                 string Input = Console.ReadLine();
                 if ("stop" == Input.ToLower())
@@ -224,7 +244,7 @@
                 }
                 try
                 {
-                    PinKod2 = Int32.Parse(Console.ReadLine());
+                    PinKod2 = Int32.Parse(Input);
                     if (PinKod2 == PinKodArray[UserIndex])
                     {
                         break;
@@ -232,9 +252,14 @@
                     else
                     {
                         Console.WriteLine("Fel pinkod, Försök igen!");
+                        PinAttempts++;
                     }
                 }
-                catch (FormatException) { Console.WriteLine("Ogiltigt val, var snäll och skriv in ett nummer!"); }
+                catch (FormatException) 
+                    { 
+                        Console.WriteLine("Ogiltigt val, var snäll och skriv in ett nummer!");
+                        PinAttempts++;
+                    }
             }
             KontoSaldon[UserIndex][KontoNummer - 1] -= Summa;
             Console.WriteLine($"Nytt saldo: {AnvändarKonton[UserIndex][KontoNummer - 1]} : {KontoSaldon[UserIndex][KontoNummer - 1]:N2} \n");
@@ -268,7 +293,7 @@
             {
                 new List<string> {"LöneKonto", "SparKonto", "MatKonto", "Övrigt"},
                 new List<string> {"LöneKonto", "SparKonto", "ReseKonto"},
-                new List<string> {"PrivatKonto", "FondKonto", "DjurKonto"},
+                new List<string> {"PrivatKonto", "FondKonto"},
                 new List<string> {"LöneKonto"},
                 new List<string> {"LöneKonto", "SparKonto", "MatKonto", "Övrigt", "DjurKonto", "HusKonto"}
             };
@@ -277,8 +302,8 @@
             {
                 new List<decimal> {23000.54m, 150000.54m, 3000.44m, 1500.45m},
                 new List<decimal> {23000.34m, 150000.35m, 15000.35m},
-                new List<decimal> {23000, 150000, 2500},
-                new List<decimal> {23000, 50000, 200000},
+                new List<decimal> {23000, 150000},
+                new List<decimal> {23000},
                 new List<decimal> { 23000, 150000, 3000, 1500, 2500, 50000}
             };
 
