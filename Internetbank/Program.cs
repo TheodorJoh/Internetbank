@@ -5,7 +5,7 @@
         //This method checks if the correct credentials have been inputed when you login. The mehod has 5 paramters and these are AnvändarNamn which is the username the user inputed and the same with PinKod except it is for the users password.
         //The two array paramters AnvändarNamnArray and PinKodArray are used to check if the inputed username and password are correct and then lastly the UserIndex is outputed so that we later can used that to identify the right account for the right user.
 
-        static bool CheckLogin(string AnvändarNamn, int PinKod, string[] AnvändarNamnArray, int[] PinKodArray, out int UserIndex)
+        static bool CheckLoginInfo(string AnvändarNamn, int PinKod, string[] AnvändarNamnArray, int[] PinKodArray, out int UserIndex)
         {
             for (int i = 0; i < AnvändarNamnArray.Length; i++)
             {
@@ -22,7 +22,7 @@
         //Method that prints all of the accounts associated with the user and also prints the balances for each account.
         //The method takes 3 paramters, UserIndex which is used to located the right account, AnvändarKonton which is where all the accounts are located and then KontoSaldon which is where all the balancs are stored.
 
-        static void VisaKonton(int UserIndex, List<List<String>> AnvändarKonton, List<List<decimal>> KontoSaldon)
+        static void ShowAccounts(int UserIndex, List<List<String>> AnvändarKonton, List<List<decimal>> KontoSaldon)
         {
             for (int i = 0; i < AnvändarKonton[UserIndex].Count; i++)
             {
@@ -35,7 +35,7 @@
         //This method handles the transferes between accounts.
         //The method takes 3 paramters, UserIndex which is used to located the right account, AnvändarKonton which is where all the accounts are located and then KontoSaldon which is where all the balancs are stored.
 
-        static void KontoÖverföring(int UserIndex, List<List<String>> AnvändarKonton, List<List<decimal>> KontoSaldon)
+        static void TransferMoney(int UserIndex, List<List<String>> AnvändarKonton, List<List<decimal>> KontoSaldon)
         {
             int FrånIndex;
             int Val;
@@ -156,7 +156,7 @@
         //This method handles taking out money from an account.
         //The method takes 3 paramters, UserIndex which is used to located the right account, AnvändarKonton which is where all the accounts are located and then KontoSaldon which is where all the balancs are stored.
         //The method also needs the PinKodArray so that it can check if the inputed pinkod is correct.
-        static void KontoUtdrag(int UserIndex, List<List<String>> AnvändarKonton, List<List<decimal>> KontoSaldon, int[] PinKodArray)
+        static void WithdrawMoney(int UserIndex, List<List<String>> AnvändarKonton, List<List<decimal>> KontoSaldon, int[] PinKodArray)
         {
             int PinAttempts = 0;
             int PinMax = 3;
@@ -290,7 +290,7 @@
             int[] PinKodArray = { 1337, 0026, 3337, 4337, 5337 };
             //List for the different accounts.
             List<List<string>> AnvändarKonton = new List<List<string>>
-            {
+            {  
                 new List<string> {"LöneKonto", "SparKonto", "MatKonto", "Övrigt"},
                 new List<string> {"LöneKonto", "SparKonto", "ReseKonto"},
                 new List<string> {"PrivatKonto", "FondKonto"},
@@ -323,7 +323,7 @@
                     PinKod = -1;
                 }
                 Console.WriteLine("");
-                if (CheckLogin(StringTemp, PinKod, AnvändarNamnArray, PinKodArray, out UserIndex))
+                if (CheckLoginInfo(StringTemp, PinKod, AnvändarNamnArray, PinKodArray, out UserIndex))
                 {
                     MenyVal = 0;
                     while (MenyVal != 4)
@@ -352,13 +352,13 @@
                         switch (MenyVal)
                         {
                             case 1:
-                                VisaKonton(UserIndex, AnvändarKonton, KontoSaldon);
+                                ShowAccounts(UserIndex, AnvändarKonton, KontoSaldon);
                                 break;
                             case 2:
-                                KontoÖverföring(UserIndex, AnvändarKonton, KontoSaldon);
+                                TransferMoney(UserIndex, AnvändarKonton, KontoSaldon);
                                 break;
                             case 3:
-                                KontoUtdrag(UserIndex, AnvändarKonton, KontoSaldon, PinKodArray);
+                                WithdrawMoney(UserIndex, AnvändarKonton, KontoSaldon, PinKodArray);
                                 break;
                             case 4:
                                 Console.WriteLine($"Hej då {StringTemp}! \n");
