@@ -291,6 +291,11 @@
                         Console.WriteLine("Ogiltigt val, var snäll och skriv in ett nummer!");
                         pinAttempts++;
                     }
+                catch (OverflowException)
+                {
+                    Console.WriteLine("För stort nummer!");
+                    pinAttempts++;
+                }
             }
             accountBalances[userIndex][accountNumber - 1] -= amount;
             Console.Clear();
