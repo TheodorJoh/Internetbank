@@ -69,6 +69,7 @@
                 string Input = Console.ReadLine();
                 if("stop" == Input.ToLower())
                 {
+                    Console.Clear();
                     return;
                 }
                 try
@@ -109,6 +110,7 @@
                 string Input = Console.ReadLine();
                 if ("stop" == Input.ToLower())
                 {
+                    Console.Clear();
                     return;
                 }
                 try
@@ -136,6 +138,7 @@
                 string Input = Console.ReadLine();
                 if ("stop" == Input.ToLower())
                 {
+                    Console.Clear();
                     return;
                 }
                 try
@@ -195,6 +198,7 @@
                 string Input = Console.ReadLine();
                 if ("stop" == Input.ToLower())
                 {
+                    Console.Clear();
                     return;
                 }
                 try
@@ -220,6 +224,7 @@
                 string Input = Console.ReadLine();
                 if ("stop" == Input.ToLower())
                 {
+                    Console.Clear();
                     return;
                 }
                 try
@@ -267,6 +272,7 @@
                 string Input = Console.ReadLine();
                 if ("stop" == Input.ToLower())
                 {
+                    Console.Clear();
                     return;
                 }
                 try
@@ -351,6 +357,10 @@
                     enteredPinCode = Int32.Parse(Console.ReadLine());
                 }
                 catch (FormatException)
+                {
+                    enteredPinCode = -1;
+                }
+                catch (OverflowException)
                 {
                     enteredPinCode = -1;
                 }
