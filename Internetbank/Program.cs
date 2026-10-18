@@ -247,6 +247,9 @@
             {
                 if (pinAttempts == 3)
                 {
+                    Console.Clear();
+                    Console.WriteLine("--- Utlåst ---");
+                    Console.WriteLine("");
                     Console.WriteLine($"Du har använt alla dina försök du måste vänta {LockoutTime} minuter innan du kan försöka igen!");
                     DateTime startTime = DateTime.UtcNow;
                     TimeSpan breakDuration = TimeSpan.FromMinutes(LockoutTime);
@@ -415,6 +418,9 @@
                     Console.WriteLine("Fel lösenord eller användarnamn \n");
                     if (pinAttempts == 3)
                     {
+                        Console.Clear();
+                        Console.WriteLine("--- Utlåst ---");
+                        Console.WriteLine("");
                         Console.WriteLine($"Du har använt alla dina försök du måste vänta {LockoutTime} minuter innan du kan försöka igen!");
                         DateTime startTime = DateTime.UtcNow;
                         TimeSpan breakDuration = TimeSpan.FromMinutes(LockoutTime);
