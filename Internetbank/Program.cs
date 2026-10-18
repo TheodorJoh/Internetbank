@@ -266,6 +266,7 @@
                             pinAttempts = 0;
                             break;
                         }
+                        Thread.Sleep(1000);
                     }
                 }
                 Console.Write("Ange pinkod: ");
@@ -442,6 +443,7 @@
                                 pinAttempts = 0;
                                 break;
                             }
+                            Thread.Sleep(1000);
                         }
                     }
                 }
