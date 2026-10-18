@@ -84,6 +84,7 @@
                 }
                 catch (FormatException) { Console.WriteLine("Ogiltigt val, var snäll skriv in ett nummer!"); }
                 catch (ArgumentOutOfRangeException) { Console.WriteLine($"Ogiltigt val, var snäll och skriv in ett nummer mellan 1-{userAccounts[userIndex].Count}"); }
+                catch (OverflowException) { Console.WriteLine($"Ogiltigt val, var snäll och skriv in ett nummer mellan 1-{userAccounts[userIndex].Count}"); }
             }
             fromIndex = fromIndex - 1; //Subtract one because the list shown to the user starts at 1 while a list starts at 0.
             Console.WriteLine("");
@@ -121,6 +122,7 @@
                 }
                 catch (FormatException) { Console.WriteLine("Ogiltigt val, var snäll skriv in ett nummer!"); }
                 catch (ArgumentOutOfRangeException) { Console.WriteLine($"Ogiltigt val, var snäll och skriv in ett nummer mellan 1-{availablePositions.Count}"); }
+                catch (OverflowException) { Console.WriteLine($"Ogiltigt val, var snäll och skriv in ett nummer mellan 1-{availablePositions.Count}"); }
             }
             Console.WriteLine("");
 
@@ -154,6 +156,7 @@
                 }
                 catch (FormatException) { Console.WriteLine("Ogiltigt val, var snäll skriv in ett nummer!"); }
                 catch (ArgumentOutOfRangeException) { Console.WriteLine("Ogiltigt val, var snäll och skriv in ett nummer större än 0"); }
+                catch (OverflowException) { Console.WriteLine("Ogiltigt val, var snäll och skriv in ett nummer större än 0"); }
             }
 
             Console.Clear();
@@ -206,6 +209,7 @@
                 }
                 catch (FormatException) { Console.WriteLine("Ogiltigt val, var snäll skriv in ett nummer!"); }
                 catch (ArgumentOutOfRangeException) { Console.WriteLine($"Ogiltigt val, var snäll och skriv in ett nummer mellan 1-{userAccounts[userIndex].Count}"); }
+                catch (OverflowException) { Console.WriteLine($"Ogiltigt val, var snäll och skriv in ett nummer mellan 1-{userAccounts[userIndex].Count}"); }
             }
             Console.WriteLine("");
             while (true)
@@ -235,6 +239,7 @@
                 }
                 catch (FormatException) { Console.WriteLine("Ogiltigt val, var snäll och skriv in ett nummer!"); }
                 catch (ArgumentOutOfRangeException) { Console.WriteLine("Ogiltigt val, var snäll och skriv in ett nummer större än 0"); }
+                catch (OverflowException) { Console.WriteLine("Ogiltigt val, var snäll och skriv in ett nummer större än 0"); }
             }
 
             Console.WriteLine("");
@@ -372,6 +377,7 @@
                             }
                             catch (FormatException) { Console.WriteLine("Ogiltigt val, var snäll och skriv in ett nummer!"); }
                             catch (ArgumentOutOfRangeException) { Console.WriteLine("Ogiltigt val, var snäll och skriv in ett nummer mellan 1-4"); }
+                            catch (OverflowException) { Console.WriteLine("Ogiltigt val, var snäll och skriv in ett nummer mellan 1-4"); }
                         }
                         Console.WriteLine("");
                         //Calls the method that matches the users choice.
