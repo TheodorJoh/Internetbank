@@ -69,7 +69,6 @@
                 string Input = Console.ReadLine();
                 if("stop" == Input.ToLower())
                 {
-                    Console.Clear();
                     return;
                 }
                 try
@@ -110,7 +109,6 @@
                 string Input = Console.ReadLine();
                 if ("stop" == Input.ToLower())
                 {
-                    Console.Clear();
                     return;
                 }
                 try
@@ -138,7 +136,6 @@
                 string Input = Console.ReadLine();
                 if ("stop" == Input.ToLower())
                 {
-                    Console.Clear();
                     return;
                 }
                 try
@@ -198,7 +195,6 @@
                 string Input = Console.ReadLine();
                 if ("stop" == Input.ToLower())
                 {
-                    Console.Clear();
                     return;
                 }
                 try
@@ -224,7 +220,6 @@
                 string Input = Console.ReadLine();
                 if ("stop" == Input.ToLower())
                 {
-                    Console.Clear();
                     return;
                 }
                 try
@@ -268,12 +263,13 @@
                         }
                         Thread.Sleep(1000);
                     }
+                    Console.Clear();
+                    Console.WriteLine("--- 3 nya pinkod försök ---");
                 }
                 Console.Write("Ange pinkod: ");
                 string Input = Console.ReadLine();
                 if ("stop" == Input.ToLower())
                 {
-                    Console.Clear();
                     return;
                 }
                 try
@@ -445,6 +441,8 @@
                             }
                             Thread.Sleep(1000);
                         }
+                        Console.Clear();
+                        Console.WriteLine("--- 3 nya pinkod försök ---");
                     }
                 }
             }
