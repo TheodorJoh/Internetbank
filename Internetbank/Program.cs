@@ -247,7 +247,7 @@
                         }
                     }
                 }
-                Console.Write("Ange pinCode: ");
+                Console.Write("Ange pinkod: ");
                 string Input = Console.ReadLine();
                 if ("stop" == Input.ToLower())
                 {
@@ -262,7 +262,7 @@
                     }
                     else
                     {
-                        Console.WriteLine("Fel pinCode, Försök igen!");
+                        Console.WriteLine("Fel pinkod, Försök igen!");
                         pinAttempts++;
                     }
                 }
@@ -318,7 +318,7 @@
                 new List<decimal> { 23000, 150000, 3000, 1500, 2500, 50000}
             };
 
-            Console.WriteLine("Välkommen till TheodorBank skriv in ditt användarnamn och pin-kod för att fortsätta! \n");
+            Console.WriteLine("Välkommen till TheodorBank skriv in ditt användarnamn och pinkod för att fortsätta! \n");
             //The main loop which runs forever.
             //The loop begins with asking the user for their credentials and if that is correct they get into the main menu and if they do not get it correct the loop comes back around and they get to put in their credentials again.
             //However if the user gets their credentials incorrect 3 times they are locked out for first 3 minutes and then doubles for each lockout.
