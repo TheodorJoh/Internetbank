@@ -27,6 +27,7 @@
         // accountBalances is the balances for all users with the same index as userAccounts.
         static void ShowAccounts(int userIndex, List<List<String>> userAccounts, List<List<decimal>> accountBalances)
         {
+            Console.WriteLine($"--- Konton och saldon ---");
             for (int i = 0; i < userAccounts[userIndex].Count; i++)
             {
                 Console.WriteLine($"{userAccounts[userIndex][i]} : {accountBalances[userIndex][i]:N2}"); // N2 format the output so that there are 2 decimals so that the output is in kronor and ören.
@@ -44,6 +45,7 @@
         // The method stops early if the user only has one account
         static void TransferMoney(int userIndex, List<List<String>> userAccounts, List<List<decimal>> accountBalances)
         {
+            Console.WriteLine("--- Överföring ---");
             int fromIndex; //Index of the account to take money from
             int selectedAccount; //The number the user picked in the send to list.
             if (userAccounts[userIndex].Count <= 1)
@@ -126,6 +128,8 @@
             decimal transferAmount;
             while (true)
             {
+                Console.WriteLine("Hur mycket vill du överföra?");
+                Console.WriteLine("");
                 Console.Write("Summa: ");
                 string Input = Console.ReadLine();
                 if ("stop" == Input.ToLower())
@@ -152,7 +156,8 @@
                 catch (ArgumentOutOfRangeException) { Console.WriteLine("Ogiltigt val, var snäll och skriv in ett nummer större än 0"); }
             }
 
-            Console.WriteLine("");
+            Console.Clear();
+            Console.WriteLine("--- Nya saldon ---");
             accountBalances[userIndex][fromIndex] -= transferAmount;
             accountBalances[userIndex][toIndex] += transferAmount;
             Console.WriteLine($"{userAccounts[userIndex][fromIndex]} : {accountBalances[userIndex][fromIndex]:N2}");
@@ -169,6 +174,7 @@
         // Typing "stop" at any prompt returns the user to the main menu. 
         static void WithdrawMoney(int userIndex, List<List<String>> userAccounts, List<List<decimal>> accountBalances, int[] pinCodesArray)
         {
+            Console.WriteLine("--- Kontoutdrag ---");
             int pinAttempts = 0; //pinAttempts counts wrong pincode attempts.
             int LockoutTime = 3; // Wait time in minutes after 3 wrong pincode attempts. It doubles for each lockout.
             int enteredPinCode;
@@ -204,6 +210,8 @@
             Console.WriteLine("");
             while (true)
             {
+                Console.WriteLine("Hur mycket pengar vill du ta ut?");
+                Console.WriteLine("");
                 Console.Write("Summa: ");
                 string Input = Console.ReadLine();
                 if ("stop" == Input.ToLower())
@@ -263,6 +271,7 @@
                     else
                     {
                         Console.WriteLine("Fel pinkod, Försök igen!");
+                        Console.WriteLine();
                         pinAttempts++;
                     }
                 }
@@ -273,7 +282,9 @@
                     }
             }
             accountBalances[userIndex][accountNumber - 1] -= amount;
-            Console.WriteLine($"Nytt saldo: {userAccounts[userIndex][accountNumber - 1]} : {accountBalances[userIndex][accountNumber - 1]:N2} \n");
+            Console.Clear();
+            Console.WriteLine("--- Nytt saldo ---");
+            Console.WriteLine($"{userAccounts[userIndex][accountNumber - 1]} : {accountBalances[userIndex][accountNumber - 1]:N2} \n");
             Console.WriteLine("Klicka enter för att komma till huvudmenyn");
             Console.ReadLine();
         }
@@ -341,6 +352,7 @@
                     menuChoice = 0;
                     while (menuChoice != 4)
                     {
+                        Console.Clear();
                         Console.WriteLine($"Välkommen {enteredUsername}!");
                         Console.WriteLine("1. Se dina konton och saldo");
                         Console.WriteLine("2. Överföring mellan konton");
@@ -366,16 +378,20 @@
                         switch (menuChoice)
                         {
                             case 1:
+                                Console.Clear();
                                 ShowAccounts(userIndex, userAccounts, accountBalances);
                                 break;
                             case 2:
+                                Console.Clear();
                                 TransferMoney(userIndex, userAccounts, accountBalances);
                                 break;
                             case 3:
+                                Console.Clear();
                                 WithdrawMoney(userIndex, userAccounts, accountBalances, pinCodesArray);
                                 break;
                             // Case 4 logs the user out, resetting them back into the login loop.
                             case 4:
+                                Console.Clear();
                                 Console.WriteLine($"Hej då {enteredUsername}! \n");
                                 Console.WriteLine("Välkommen till TheodorBank skriv in ditt användarnamn och pin-kod för att fortsätta! \n");
                                 pinAttempts = 0;
@@ -389,6 +405,7 @@
                 else
                 {
                     pinAttempts++;
+                    Console.Clear();
                     Console.WriteLine("Fel lösenord eller användarnamn \n");
                     if (pinAttempts == 3)
                     {
