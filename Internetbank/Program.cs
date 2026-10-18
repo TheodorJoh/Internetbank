@@ -97,7 +97,9 @@
                 availablePositions.Add(i);
             }
 
-
+            Console.Clear();
+            Console.WriteLine($"Från: {userAccounts[userIndex][fromIndex]}");
+            Console.WriteLine("");
             Console.WriteLine("Vilket konto vill du överföra pengar till?");
             for (int i = 0; i < availablePositions.Count; i++)
             {
